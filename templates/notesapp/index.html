@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+    <h2>Hi, dear {{ user.username }} on my blog!</h2>
+    {% else %}
+    <h2>Hi there!</h2>
+    {% endif %}
+    <a href="/notes/login">Login</a>
+    <p>{{ user_id }}</p>
+    <p>{{ note }}</p>
+    {% for n in note %}
+        <p>{{ forloop.counter }}: "{{ n.note_name }}"</p>
+    {% endfor %}
+</body>
+</html>

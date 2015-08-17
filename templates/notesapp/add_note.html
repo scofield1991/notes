@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+ <h1>Add new note!</h1>
+
+    <form id="note_form" method="POST" action="/notes/add_note" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ note_form.as_p }}
+
+
+    <input type="submit" name="submit" value="Submit">
+    </form>
+</body>
+</html>

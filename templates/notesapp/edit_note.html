@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="note_form" method="POST" action="" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ note.as_p }}
+    <input type="submit" name="submit" value="Submit">
+    </form>
+</body>
+</html>

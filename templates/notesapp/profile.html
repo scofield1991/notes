@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>Your personal information!</h1>
+{{ user_form_errors }}
+
+    <form id="user_form" method="POST" action="/blog/profile" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ username }}
+
+
+        {{ user_form.as_p }}
+        {{ add_form.as_p }}
+
+<p>{{ pw }}</p>
+    <input type="submit" name="submit" value="Register">
+    </form>
+</body>
+</html>
