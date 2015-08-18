@@ -6,6 +6,7 @@ from django.contrib.auth.models import  User
 from notesapp.models import UserProfile, Note
 from django.template import RequestContext
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def index(request):
@@ -46,16 +47,20 @@ def auth_login(request):
         username=request.POST.get('username')
         password=request.POST.get('password')
         user=authenticate(username=username, password=password)
+        error="Invalid login details!"
+        inactive="The user is inactive! "
+        dict_err={"error":error}
+        dict_inactive={'error':inactive}
         if user:
             if user.is_active:
                 login(request, user)
                 request.session['user_id'] = user.id
                 return HttpResponseRedirect('/notes/')
             else:
-                return HttpResponse("Your account is disabled")
+                return render(request, 'notesapp/login.html', dict_inactive)
         else:
             print("Invalid login details: {0}, {1}".format(username, password))
-            return HttpResponse("Invalid login details supplied.")
+            return render(request, 'notesapp/login.html', dict_err)
 
     else:
         return render(request, 'notesapp/login.html', {})
@@ -70,9 +75,15 @@ def add_note(request):
         note_form=NoteForm(data=request.POST)
 
         if note_form.is_valid():
-            note_obj=Note(note_name=request.POST.get('note_name'),
-                      note_body=request.POST.get('note_body'), user_id=request.session['user_id'])
-            note_obj.save()
+            # note_obj=Note(note_name=request.POST.get('note_name'),
+            #           note_body=request.POST.get('note_body'),
+            #               user_id=request.session['user_id'])
+            note_form.instance.user = request.user
+            #note_form.user = request.session['user_id']
+            #note_form.user_id=request.session['user_id']
+            note_form.save()
+            # note_obj.save()
+            #note_obj.labels.add(labels=request.POST.get('labels'))
             return HttpResponseRedirect('/notes/')
     else:
         note_form = NoteForm()
@@ -80,7 +91,7 @@ def add_note(request):
 
     return render(request,
         'notesapp/add_note.html',
-        {'note_form': note_form } )
+        {'note_form': note_form, 'user_id':request.session['user_id'] } )
 
 def edit_note(request, note_id):
     if request.method=='GET':
@@ -102,6 +113,13 @@ def edit_note(request, note_id):
 def delete_note(request, note_id):
     Note.objects.get(id=note_id).delete()
     return HttpResponseRedirect('/notes/')
+
+@login_required()
+def see_note(request, note_id):
+    note_obj=Note.objects.get(id=note_id)
+    if   note_obj.user== request.user or note_obj.permit=='Y':
+        return render(request, 'notesapp/see_note.html', {'note':note_obj})
+
 
 
 

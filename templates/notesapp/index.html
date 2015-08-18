@@ -1,20 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends 'notesapp/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Notes{% endblock %}
+   {% block body_block %}
+
+ <link rel="stylesheet" href={% static "css/notes.css" %}>
+
     {% if user.is_authenticated %}
     <h2>Hi, dear {{ user.username }} on my blog!</h2>
     {% else %}
     <h2>Hi there!</h2>
     {% endif %}
-    <a href="/notes/login">Login</a>
     <p>{{ user_id }}</p>
-    <p>{{ note }}</p>
+       <ul class="list-group">
     {% for n in note %}
-        <p>{{ forloop.counter }}: "{{ n.note_name }}"</p>
+         <li ><a class="note" href="see_note/{{ n.id }}/"><h2>{{ forloop.counter }}: {{ n.note_name }}</h2>
+             <a href ="note/{{ n.id }}/ ">Edit</a>&nbsp;|&nbsp;
+             <a href =" del_note/{{ n.id }}/">Delete</a> </li></a>
+
     {% endfor %}
-</body>
-</html>
+        </ul>
+{% endblock %}

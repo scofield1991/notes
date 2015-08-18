@@ -1,0 +1,13 @@
+#bd{
+    width:90%;
+}
+#page-wrap {
+     width: 80%;
+     margin: 0 auto;
+}
+
+.error {
+        /*background: #f60000;*/
+        border: 3px solid #d50000;
+        border-color: red white;
+}
