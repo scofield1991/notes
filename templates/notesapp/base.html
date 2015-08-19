@@ -35,17 +35,19 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-                <li><a href="/lite/contacts">Contacts</a></li>
+
                     {% if user.is_authenticated %}
+                        <li><a href="/notes/all_notes/">Other users notes</a></li>
                         <li><a href="/notes/add_note/">Add new note</a></li>
+
                         <li><a href="/notes/logout/">Logout</a></li>
-                        <li><a href="#">{{ user.first_name }} {{ user.last_name|slice:"1" }}.</a></li>
-                        {% if user.userprofile.picture %}
+                        <li><a href="#">{{ user.first_name }}</a></li>
+                      <!--  {% if user.userprofile.picture %}
 
                         <li><img src={{ MEDIA_URL }}{{ user.userprofile.picture }}></li>
                             {% else %}
                             <li><img src="/static/images/avatar.png"></li>
-                            {% endif %}
+                            {% endif %}-->
                     {% else %}
                         <li><a href="/notes/register/">Register Here</a></li>
                         <li><a href="/notes/login/">Login</a></li>
@@ -70,13 +72,7 @@
         </div>
       </div>
     </div>
-<footer class="panel-footer navbar-fixed-bottom" id="page-wrap">
-      <div class="navbar-inner">
-          <div class="container">
-         <p></p>
-          </div>
-          </div>
-          </footer>
+
 </div>
 
 </div>

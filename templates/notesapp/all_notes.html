@@ -12,13 +12,11 @@
     {% else %}
     <h2>Hi there!</h2>
     {% endif %}
-
+    <p>{{ user_id }}</p>
        <ul class="list-group">
-    {% for n in note %}
-         <li ><a  style="background-color:{{ n.color }}" class="note" href="see_note/{{ n.id }}/"><h2>{{ forloop.counter }}: {{ n.note_name }}</h2>
-             <a href ="note/{{ n.id }}/ ">Edit</a>&nbsp;|&nbsp;
-             <a href =" del_note/{{ n.id }}/">Delete</a> </a></li>
-
+    {% for n in notes %}
+         <li ><a  style="background-color:{{ n.color }}" class="note" href="/notes/see_note/{{ n.id }}/"><h2>{{ forloop.counter }}: {{ n.note_name }}</h2></a>
     {% endfor %}
-        </ul>
+       </ul>
+
 {% endblock %}

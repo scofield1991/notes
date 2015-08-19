@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    {{ note }}
-</body>
-</html>
+
+{% extends 'notesapp/base.html' %}
+
+{% load staticfiles %}
+
+{% block title %}Add new note{% endblock %}
+{% block body_block %}
+
+ <h1>{{ note.note_name }}</h1>
+
+
+<div class="jumbotron" style="background-color:{{ note.color }}">
+<p ><h2 style="background-color:{{ note.color }}">{{ note.note_body }}</h2></p>
+    </div>
+
+       <p> {% for label in note.labels.all %}
+  {{ label }}
+  {% if not forloop.last %},{% else %}  {% endif %}
+{% endfor %}
+    </p>
+             <a href ="/notes/note/{{ note.id }}/ ">Edit</a>&nbsp;|&nbsp;
+             <a href ="/notes/del_note/{{ note.id }}/">Delete</a>
+
+
+
+{{ user_id }}
+
+
+
+    </form>
+
+{% endblock %}

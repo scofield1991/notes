@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from datetime import datetime
 import django
+from colorful.fields import RGBColorField
 
 # Create your models here.
 
@@ -37,6 +38,7 @@ class Note(models.Model):
     labels=models.ManyToManyField(Label)
     permissions=(('Y', 'Yes'),('N', 'No'),)
     permit=models.CharField(max_length=3, choices=permissions, default='N')
+    color = RGBColorField()
     #share=models.ManyToManyField(Share)
 
     def __str__(self):

@@ -1,0 +1,19 @@
+{% extends 'notesapp/base.html' %}
+{% load staticfiles %}
+
+{% block title %}Add new label{% endblock %}
+{% block body_block %}
+
+ <h1>Add new label!</h1>
+
+    <form id="note_form" method="POST" action="/notes/add_label/" enctype="multipart/form-data">
+
+    {% csrf_token %}
+    {{ label_form.as_p }}
+
+
+    <input class="btn btn-large btn-primary " type="submit" value="Submit" />
+
+    </form>
+
+{% endblock %}

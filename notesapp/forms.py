@@ -41,9 +41,16 @@ class NoteForm(forms.ModelForm):
     note_name = forms.CharField(widget=forms.TextInput(attrs={'required': True, 'class': 'form-control'}))
     note_body = forms.CharField(widget=forms.Textarea(attrs={ 'class': 'form-control' ,'rows':'5'}))
     user=forms.IntegerField(widget=forms.HiddenInput(), required=False)
+
     #labels = forms.MultipleChoiceField()
     class Meta:
         model=Note
-        fields=('note_name', 'note_body','user', 'labels')
+        fields=('note_name', 'note_body','user', 'labels', 'color','permit')
+
+class LabelForm(forms.ModelForm):
+    class Meta:
+        fields=('title',)
+        model = Label
+
 
 

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import  HttpResponse, HttpResponseRedirect
-from notesapp.forms import UserForm, UserProfileForm, NoteForm
+from notesapp.forms import UserForm, UserProfileForm, NoteForm, LabelForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import  User
-from notesapp.models import UserProfile, Note
+from notesapp.models import UserProfile, Note, Label
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,11 @@ def index(request):
         return render_to_response('notesapp/index.html', data)
     else:
         return render_to_response('notesapp/index.html', {})
+
+def all_notes(request):
+    if 'user_id' in request.session:
+        note_obj=Note.objects.filter(permit='Y').exclude(user_id=request.session['user_id'])
+        return render(request, 'notesapp/all_notes.html', {'notes':note_obj})
 
 def register(request):
     if request.method=='POST':
@@ -94,15 +99,26 @@ def add_note(request):
         {'note_form': note_form, 'user_id':request.session['user_id'] } )
 
 def edit_note(request, note_id):
+    #note_obj=Note.objects.filter(id=note_id)
+    #if request.GET:
     if request.method=='GET':
         note_obj=Note.objects.get(id=note_id)
         note_form = NoteForm(instance=note_obj)
         #note_obj=Note.objects,filter(id=request.POST.get('id')).update(note_obj=request.POST.get('note_body'))
         return render(request, 'notesapp/edit_note.html', {'note': note_form})
-    elif request.method == 'POST':
+    #elif request.method == 'POST':
+    else:
         note_obj=Note.objects.filter(id=note_id)
         note_obj.update(note_name=request.POST.get('note_name'))
         note_obj.update(note_body=request.POST.get('note_body'))
+        note_obj.update(color=request.POST.get('color'))
+        #note_obj=Note.objects.filter(id=note_id)
+        note_obj[0].labels=[]
+        #note_obj.update(labels=request.POST.get('labels'))
+
+        for label in request.POST.getlist('labels'):
+            print(label)
+            note_obj[0].labels.add(Label.objects.get(id=label))
         #note_form = NoteForm(data=request.POST)
         #if note_form.is_valid():
          #   note_obj=Note(note_name=request.POST.get('note_name'),
@@ -119,8 +135,21 @@ def see_note(request, note_id):
     note_obj=Note.objects.get(id=note_id)
     if   note_obj.user== request.user or note_obj.permit=='Y':
         return render(request, 'notesapp/see_note.html', {'note':note_obj})
+    else:
+        return HttpResponseRedirect('/notes/')
 
+def add_label(request):
+    if request.method=='POST':
+        label_form=LabelForm(data=request.POST)
+        if label_form.is_valid():
+            label_form.save()
+            return HttpResponseRedirect("/notes/add_note/")
+    else:
+        label_form = LabelForm()
 
+    return render(request,
+        'notesapp/add_label.html',
+        {'label_form': label_form } )
 
 
 
