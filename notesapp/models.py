@@ -4,8 +4,10 @@ from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.utils import timezone
 import django
 from colorful.fields import RGBColorField
+from mptt.models import MPTTModel, TreeForeignKey
 
 # Create your models here.
 
@@ -15,6 +17,18 @@ class Label(models.Model):
 
     def __str__(self):
         return self.title
+
+class Category(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=True)
+
+    def __str__(self):
+        return self.name
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+
 
 class UserProfile(models.Model):
     user=models.OneToOneField(User)
@@ -39,10 +53,14 @@ class Note(models.Model):
     permissions=(('Y', 'Yes'),('N', 'No'),)
     permit=models.CharField(max_length=3, choices=permissions, default='N')
     color = RGBColorField()
+    category = models.ManyToManyField(Category)
     #share=models.ManyToManyField(Share)
 
     def __str__(self):
         return self.note_name
+
+
+
 
 
 

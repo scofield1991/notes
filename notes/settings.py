@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'notesapp',
     'captcha',
+    'mptt',
+
 )
 
 MIDDLEWARE_CLASSES = (

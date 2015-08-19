@@ -13,4 +13,5 @@ urlpatterns=patterns('',
                      url(r'^del_note/(?P<note_id>[\w\-]+)/$', views.delete_note, name='delete_note'),
                      url(r'^see_note/(?P<note_id>[\w\-]+)/$', views.see_note, name='see_note'),
                      url(r'^add_label/$', views.add_label, name='add_label'),
+                     url(r'^add_category/$', views.add_category, name='add_category'),
 )

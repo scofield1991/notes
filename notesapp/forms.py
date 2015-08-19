@@ -1,7 +1,7 @@
 __author__ = 'oleksandr'
 from django import  forms
 from django.contrib.auth.models import User
-from notesapp.models import UserProfile, Note, Label
+from notesapp.models import UserProfile, Note, Label, Category
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator, MinLengthValidator
 from captcha.fields import CaptchaField
@@ -45,12 +45,22 @@ class NoteForm(forms.ModelForm):
     #labels = forms.MultipleChoiceField()
     class Meta:
         model=Note
-        fields=('note_name', 'note_body','user', 'labels', 'color','permit')
+        fields=('note_name', 'note_body','user','category', 'labels', 'color','permit')
 
 class LabelForm(forms.ModelForm):
     class Meta:
         fields=('title',)
         model = Label
+cat_id=[Category.objects.all()[i].id for i in range(len(Category.objects.all()))]
+cat_names=[Category.objects.all()[i].name for i in range(len(Category.objects.all()))]
+cat_choices=list(zip(cat_id, cat_names))
+#cat_choices = list(enumerate([Category.objects.all()[i].name for i in range(len(Category.objects.all()))],1))
+cat_choices.append((0,''))
+
+class CategoryForm(forms.Form):
+    name = forms.CharField(widget=forms.TextInput(attrs={ 'class': 'form-control'}))
+    parent_category = forms.ChoiceField(choices=cat_choices)
+
 
 
 

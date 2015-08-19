@@ -1,14 +1,16 @@
 from django.shortcuts import render
 from django.http import  HttpResponse, HttpResponseRedirect
-from notesapp.forms import UserForm, UserProfileForm, NoteForm, LabelForm
+from notesapp.forms import UserForm, UserProfileForm, NoteForm, LabelForm, CategoryForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import  User
-from notesapp.models import UserProfile, Note, Label
+from notesapp.models import UserProfile, Note, Label, Category
 from django.template import RequestContext
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+#Главная страница. Если пользователь выполнил вход, отображаются его заметки
+#Если пользователь не вошел, просто отображается приветствие
 def index(request):
     if 'user_id' in request.session:
         user_obj=User.objects.filter(id=request.session['user_id'])
@@ -19,11 +21,13 @@ def index(request):
     else:
         return render_to_response('notesapp/index.html', {})
 
+#Отображаются все заметки других пользователей, если они разрешили их просмотр другим пользователям.
 def all_notes(request):
     if 'user_id' in request.session:
         note_obj=Note.objects.filter(permit='Y').exclude(user_id=request.session['user_id'])
         return render(request, 'notesapp/all_notes.html', {'notes':note_obj})
 
+#Страница регистрации. Использует стандартную модель User и модель UserProfile
 def register(request):
     if request.method=='POST':
         user_form=UserForm(data=request.POST)
@@ -47,6 +51,7 @@ def register(request):
         'notesapp/register.html',
         {'user_form': user_form, 'profile_form': profile_form } )
 
+#Страница входа в систему
 def auth_login(request):
     if request.method=='POST':
         username=request.POST.get('username')
@@ -74,21 +79,16 @@ def auth_logout(request):
     logout(request)
     return HttpResponseRedirect('/notes/')
 
+#Страница добавления новой заметки. Использует модель Note
 def add_note(request):
     if request.method=='POST':
 
         note_form=NoteForm(data=request.POST)
 
         if note_form.is_valid():
-            # note_obj=Note(note_name=request.POST.get('note_name'),
-            #           note_body=request.POST.get('note_body'),
-            #               user_id=request.session['user_id'])
             note_form.instance.user = request.user
-            #note_form.user = request.session['user_id']
-            #note_form.user_id=request.session['user_id']
             note_form.save()
-            # note_obj.save()
-            #note_obj.labels.add(labels=request.POST.get('labels'))
+
             return HttpResponseRedirect('/notes/')
     else:
         note_form = NoteForm()
@@ -99,14 +99,11 @@ def add_note(request):
         {'note_form': note_form, 'user_id':request.session['user_id'] } )
 
 def edit_note(request, note_id):
-    #note_obj=Note.objects.filter(id=note_id)
-    #if request.GET:
     if request.method=='GET':
         note_obj=Note.objects.get(id=note_id)
         note_form = NoteForm(instance=note_obj)
         #note_obj=Note.objects,filter(id=request.POST.get('id')).update(note_obj=request.POST.get('note_body'))
         return render(request, 'notesapp/edit_note.html', {'note': note_form})
-    #elif request.method == 'POST':
     else:
         note_obj=Note.objects.filter(id=note_id)
         note_obj.update(note_name=request.POST.get('note_name'))
@@ -114,16 +111,13 @@ def edit_note(request, note_id):
         note_obj.update(color=request.POST.get('color'))
         #note_obj=Note.objects.filter(id=note_id)
         note_obj[0].labels=[]
-        #note_obj.update(labels=request.POST.get('labels'))
 
         for label in request.POST.getlist('labels'):
-            print(label)
             note_obj[0].labels.add(Label.objects.get(id=label))
-        #note_form = NoteForm(data=request.POST)
-        #if note_form.is_valid():
-         #   note_obj=Note(note_name=request.POST.get('note_name'),
-         #             note_body=request.POST.get('note_body'), user_id=request.session['user_id'])
-         #   note_obj.save()
+
+        for category in request.POST.getlist('category'):
+            note_obj[0].category.add(Category.objects.get(id=category))
+
         return HttpResponseRedirect('/notes/')
 
 def delete_note(request, note_id):
@@ -150,6 +144,28 @@ def add_label(request):
     return render(request,
         'notesapp/add_label.html',
         {'label_form': label_form } )
+
+def add_category(request):
+    if request.method=='POST':
+        category_form=CategoryForm(data=request.POST)
+        if category_form.is_valid():
+            if request.POST.get('parent_category')!='0':
+                parent= Category.objects.get(id=request.POST.get('parent_category'))
+                Category.objects.create(name=request.POST.get('name'), parent=parent)
+            else:
+                Category.objects.create(name=request.POST.get('name'))
+
+            return HttpResponseRedirect("/notes/add_note/")
+    else:
+        category_form = CategoryForm()
+
+    print(category_form)
+
+    return render(request,
+        'notesapp/add_category.html',
+        {'category_form': category_form, 'nodes': Category.objects.all() } )
+
+   # return render(request, 'notesapp/add_category.html', {'nodes': Category.objects.all()})
 
 
 
