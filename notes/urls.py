@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^notes/', include('notesapp.urls')),
     url(r'^captcha/', include('captcha.urls')),
+    url(r'^select2/', include('django_select2.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT,)
 

@@ -15,21 +15,21 @@
     <input class="btn btn-large btn-primary " type="submit" value="Submit" />
 
     </form>
-
+<!--
  {% load mptt_tags %}
 <ul>
     {% recursetree nodes %}
         <li>
             {{ node.name }}
             {% if not node.is_leaf_node %}
-                <ul class="children">
+                <ol class="children">
                     {{ children }}
-                </ul>
+                </ol>
             {% endif %}
         </li>
     {% endrecursetree %}
 </ul>
-
+-->
 {% endblock %}
 
 

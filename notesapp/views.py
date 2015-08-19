@@ -98,6 +98,7 @@ def add_note(request):
         'notesapp/add_note.html',
         {'note_form': note_form, 'user_id':request.session['user_id'] } )
 
+#Редактирование заметки.
 def edit_note(request, note_id):
     if request.method=='GET':
         note_obj=Note.objects.get(id=note_id)
@@ -109,6 +110,7 @@ def edit_note(request, note_id):
         note_obj.update(note_name=request.POST.get('note_name'))
         note_obj.update(note_body=request.POST.get('note_body'))
         note_obj.update(color=request.POST.get('color'))
+        note_obj.update(text=request.POST.get('text'))
         #note_obj=Note.objects.filter(id=note_id)
         note_obj[0].labels=[]
 
@@ -120,10 +122,12 @@ def edit_note(request, note_id):
 
         return HttpResponseRedirect('/notes/')
 
+#Удаление заметки
 def delete_note(request, note_id):
     Note.objects.get(id=note_id).delete()
     return HttpResponseRedirect('/notes/')
 
+#Просмотр заметки другого пользователя
 @login_required()
 def see_note(request, note_id):
     note_obj=Note.objects.get(id=note_id)
@@ -132,6 +136,7 @@ def see_note(request, note_id):
     else:
         return HttpResponseRedirect('/notes/')
 
+#Добавление нового ярлыка
 def add_label(request):
     if request.method=='POST':
         label_form=LabelForm(data=request.POST)
@@ -145,6 +150,8 @@ def add_label(request):
         'notesapp/add_label.html',
         {'label_form': label_form } )
 
+
+#Добавление новой категории. Если id parent_category==0, то создаем корневую категорию.
 def add_category(request):
     if request.method=='POST':
         category_form=CategoryForm(data=request.POST)

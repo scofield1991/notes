@@ -10,7 +10,7 @@
 
 
 <div class="jumbotron" style="background-color:{{ note.color }}">
-<p ><h2 style="background-color:{{ note.color }}">{{ note.note_body }}</h2></p>
+<p ><h2 style="background-color:{{ note.color }}; color:{{ note.text }};">{{ note.note_body }}</h2></p>
     </div>
 
        <p> {% for label in note.labels.all %}

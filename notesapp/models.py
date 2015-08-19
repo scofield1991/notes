@@ -53,6 +53,7 @@ class Note(models.Model):
     permissions=(('Y', 'Yes'),('N', 'No'),)
     permit=models.CharField(max_length=3, choices=permissions, default='N')
     color = RGBColorField()
+    text = RGBColorField(default='#000000')
     category = models.ManyToManyField(Category)
     #share=models.ManyToManyField(Share)
 

@@ -15,7 +15,7 @@
 
        <ul class="list-group">
     {% for n in note %}
-         <li ><a  style="background-color:{{ n.color }}" class="note" href="see_note/{{ n.id }}/"><h2>{{ forloop.counter }}: {{ n.note_name }}</h2>
+         <li ><a  style="background-color:{{ n.color }}; color:white; " class="note" href="see_note/{{ n.id }}/"><h2 style=" color:{{ n.text }}; ">{{ forloop.counter }}: {{ n.note_name }}</h2>
              <a href ="note/{{ n.id }}/ ">Edit</a>&nbsp;|&nbsp;
              <a href =" del_note/{{ n.id }}/">Delete</a> </a></li>
 

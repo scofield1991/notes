@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'captcha',
     'mptt',
 
+
 )
 
 MIDDLEWARE_CLASSES = (
@@ -112,3 +113,4 @@ STATICFILES_DIRS=( STATIC_PATH, )
 
 MEDIA_URL='/media/'
 MEDIA_ROOT= os.path.join(BASE_DIR, 'media')
+
