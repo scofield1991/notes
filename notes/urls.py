@@ -17,11 +17,16 @@ from django.conf.urls import include, url
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework import routers
+from notesapi import  views
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^notes/', include('notesapp.urls')),
-    url(r'^captcha/', include('captcha.urls')),
-    url(r'^select2/', include('django_select2.urls')),
+    url(r'^notesapi/', include('notesapi.urls')),
+    #url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    #url(r'^captcha/', include('captcha.urls')),
+    #url(r'^select2/', include('django_select2.urls')),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT,)
 

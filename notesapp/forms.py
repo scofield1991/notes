@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 from notesapp.models import UserProfile, Note, Label, Category
 from django.core.exceptions import ValidationError
 from django.core.validators import MaxLengthValidator, MinLengthValidator
-from django_select2 import  Select2ChoiceField, Select2MultipleWidget, Select2MultipleChoiceField,Select2Widget
-from captcha.fields import CaptchaField
+#from django_select2 import  Select2ChoiceField, Select2MultipleWidget, Select2MultipleChoiceField,Select2Widget
+#from captcha.fields import CaptchaField
 
 
 #Валидация имени пользователя на уникальность
