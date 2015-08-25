@@ -109,6 +109,13 @@
       <column name="applied" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
     </table>
+    <table name="django_select2_keymap" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="key" sqlType="VARCHAR(40)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR(100)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="accessed_on" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <primary-key columns="id"/>
+    </table>
     <table name="django_session" schema="" catalog="" type="TABLE">
       <column name="session_key" sqlType="VARCHAR(40)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="session_data" sqlType="TEXT" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
@@ -127,6 +134,7 @@
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_notesapp_category_1" columns="parent_id" ref-table="notesapp_category" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
       <exported-key name="#FAKE_notesapp_category_1" table="notesapp_category" schema="" catalog="" columns="parent_id"/>
+      <exported-key name="#FAKE_notesapp_note_category_1" table="notesapp_note_category" schema="" catalog="" columns="category_id"/>
       <index name="notesapp_category_6be37982" unique="true" columns="parent_id"/>
       <index name="notesapp_category_c9e9a848" unique="true" columns="level"/>
       <index name="notesapp_category_656442a0" unique="true" columns="tree_id"/>
@@ -146,11 +154,21 @@
       <column name="user_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
       <column name="permit" sqlType="VARCHAR(3)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="color" sqlType="VARCHAR(7)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
+      <column name="text" sqlType="VARCHAR(7)" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <column name="created_date" sqlType="DATETIME" precision="2000000000" scale="10" nullable="false" jdbcType="12"/>
       <primary-key columns="id"/>
       <foreign-key name="#FAKE_notesapp_note_1" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <exported-key name="#FAKE_notesapp_note_category_2" table="notesapp_note_category" schema="" catalog="" columns="note_id"/>
       <exported-key name="#FAKE_notesapp_note_labels_2" table="notesapp_note_labels" schema="" catalog="" columns="note_id"/>
       <index name="notesapp_note_e8701ad4" unique="true" columns="user_id"/>
+    </table>
+    <table name="notesapp_note_category" schema="" catalog="" type="TABLE">
+      <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="note_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <column name="category_id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>
+      <primary-key columns="id"/>
+      <foreign-key name="#FAKE_notesapp_note_category_1" columns="category_id" ref-table="notesapp_category" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
+      <foreign-key name="#FAKE_notesapp_note_category_2" columns="note_id" ref-table="notesapp_note" ref-schema="" ref-catalog="" ref-columns="id" update-rule="3" delete-rule="3" deferrability="1"/>
     </table>
     <table name="notesapp_note_labels" schema="" catalog="" type="TABLE">
       <column name="id" sqlType="INTEGER" precision="2000000000" scale="10" nullable="false" jdbcType="4"/>

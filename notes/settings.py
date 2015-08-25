@@ -38,8 +38,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'notesapp',
-    'captcha',
+#    'captcha',
     'mptt',
+    'rest_framework',
+    'notesapi',
 
 
 )
